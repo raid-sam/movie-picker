@@ -1,0 +1,25 @@
+html{
+    font-size : 62.5%;
+}
+
+h1 {
+    @include fontStyles(7rem,8rem,#fff,1px,uppercase,normal,$titleFont,center);
+    text-shadow: 0 2px 2px $primaryColor,
+    -1px -2px 0px $primaryColor,
+    -2px 5px 1px #e86ce0,
+    -4px 8px 0px #e4b4ef,
+    -6px 11px 0px #2cd2ee ,
+    -8px 14px 0px  #c1cbf9 ;
+}
+
+h2{
+    @include fontStyles(4rem, normal, $primaryColor, 1px, uppercase, normal, $titleFont, center )
+}
+
+body{
+    @include fontStyles(2rem, 3rem, $primaryColor, 0, none, normal, $mainFont, center)
+}
+
+footer{
+    color: $backgroundColor
+}

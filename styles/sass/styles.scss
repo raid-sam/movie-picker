@@ -1,0 +1,17 @@
+@import "partials/variables";
+@import "partials/setup";
+@import "partials/mixins";
+@import "partials/typography";
+
+.noDisplay{
+        display: none; 
+}
+
+body{
+    // background-color: #c8ceec;
+    background-color: $backgroundColor;
+}
+
+footer{
+    background-color: $primaryColor;
+}

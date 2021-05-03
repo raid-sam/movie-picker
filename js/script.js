@@ -158,7 +158,7 @@ app.addEventListeners = () => {
     });
     // create an event listener for any button with an ID of "backButton" that is a child of the body element
     app.backButton.addEventListener('click', () => {
-        // app.goBack();
+        app.goBack();
         console.log('button press');
     })
 }
@@ -166,10 +166,10 @@ app.addEventListeners = () => {
 // RUN SEARCH: WHEN THE FORM IS SUBMITTED
 // declare runSearch function 
 app.runSearch = () => {
-    // give form + h1 class of noDisplay (sets it to display none)
-    app.form.classList.toggle = ('noDisplay');
+    // give form class of noDisplay (sets it to display none)
+    app.form.classList.toggle('noDisplay');
     // remove the noDisplay class from the "back" button (so it is now visible)
-    app.backButton.classList.toggle = ('noDisplay');
+    app.backButton.classList.toggle('noDisplay');
     // save user decade choice and genre choice to variables
     const userGenre = app.genreSelector.value;
     const userDecade = app.decadeSelector.value;
@@ -183,6 +183,7 @@ app.runSearch = () => {
     // grab data from the API
     // create a url object from the base url
     const url = new URL(baseURL);
+    // establish URL search parameters (API key, language, sort-by popularity-descending, user-selected-genre, user-selected-decade)
     url.search = new URLSearchParams({
         api_key: apiKey,
         with_original_language: 'en',
@@ -191,48 +192,70 @@ app.runSearch = () => {
         'primary_release_date.gte': app.decadeList[userDecade][0],
         'primary_release_date.lte': app.decadeList[userDecade][1]
     })
+    // perform a fetch with the constructed search parameters
     fetch(url)
+        // process data from API call
+        // convert fetch response to JSON data
         .then((response) => {
             return response.json();
         })
+        // define a function that accepts the JSON data as an argument
+        // this will surface our query results object (we will use this later)
         .then((jsonResponse) => {
             console.log(jsonResponse);
-            return jsonResponse
+            app.topArray(jsonResponse);
         });
-
-
-
-    console.log(app.genreList[userGenre]);
-    console.log(app.decadeList[userDecade][0]);
-    console.log(app.decadeList[userDecade][1]);
 }
 
-app.init();
+// create an array from the first 6 movie objects in the API response using the slice method (slicing from index 0 to 6)
+app.topArray = (moviesObject) => {
+    const moviesArray = moviesObject.results.slice(0, 6);
+    app.displayMovies(moviesArray);
+}
 
-        // establish URL search parameters (API key, language, sort-by popularity-descending, user-selected-genre, user-selected-decade)
-        // perform a fetch with the constructed search parameters
+// define a displayMovies function
+app.displayMovies = (moviesArray) => {
+    const imageUrl = 'https://image.tmdb.org/t/p/w500';
+    console.log(moviesArray);
+    console.log(app.gallerySelector);
+
+    // surface poster image, and movie title
+    // FOR EACH array item, create an li
+    moviesArray.forEach((movie) => {
+        // create an img with src that corresponds to the array item's .poster_path and alt-text that describes the poster as `official poster for the movie ${movie.title}`
+        const listElement = document.createElement('li');
+        const image = document.createElement('img');
+        // create an h2 with text content that corresponds to the array item's .title
+        const movieHeader = document.createElement('h2');
+        image.src = imageUrl + movie.poster_path;
+        image.alt = `official poster for the movie ${movie.title}`;
+        movieHeader.textContent = `${movie.title}`;
+        // append the h2 and img to the li
+        listElement.append(image);
+        listElement.append(movieHeader);
+        // append the li to the .gallery section
+        app.gallerySelector.append(listElement);
+    })
+}
 
 
-    // process data from API call
-        // convert fetch response to JSON data
-        // define a function that accepts the JSON data as an argument
-            // this will surface our query results object (we will )
-            // create an array from the first 6 movie objects in the API response using the slice method (slicing from index 0 to 5)
-            // surface poster image, and movie title
-                // FOR EACH array item, create an li
-                // create an img with src that corresponds to the array item's .poster_path and alt-text that describes the poster as `official poster for the movie ${movie.title}`
-                // create an h2 with text content that corresponds to the array item's .title
-                // append the h2 and img to the li
-                // append the li to the .gallery section
+
 
 // GO BACK: WHEN BACK BUTTON IS CLICKED
-    // declare goBack function
+// declare goBack function
+app.goBack = () => {
     // set the innerHTML of the .gallery section to an empty string
+    app.gallerySelector.innerHTML = "";
     // toggle the noDisplay class on the main title and the form element (showing them)
+    app.mainTitle.textContent = "Movie Picker";
     // toggle the noDisplay on the "back" button, hiding it
+    app.form.classList.toggle('noDisplay');
+    app.backButton.classList.toggle('noDisplay');
+}
 
 
 // call init function
+app.init();
 
 // stretch goals:
     // populate genre list directly from the API with an initial call so it's absolutely up to date
