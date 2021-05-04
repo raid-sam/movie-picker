@@ -15,3 +15,58 @@ body{
 footer{
     background-color: $primaryColor;
 }
+
+button {
+    background-color: $primaryColor;
+    color: $backgroundColor;
+    border: none;
+    text-transform: uppercase;
+    padding: 1.5rem;
+    border-radius: 15px;
+    max-width: 20rem;
+}
+
+select {
+    width: 24rem;
+    margin-top: 1rem;
+    margin-bottom: 3rem;
+    text-align: center;
+
+}
+
+// select {
+//     appearance: none;
+//     border: none;
+//     background-color: $backgroundColor;
+//     border: 3px solid $primaryColor;
+//     padding: 1rem;
+//     border-radius: 15px;
+//     width: 17rem;
+// }
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    // border: 2px solid red;
+    margin-top: 6rem;
+    // position: absolute;
+    // top: 35%;
+
+}
+
+.container {
+    max-width: 1200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0 auto;
+}
+
+footer {
+    position: fixed;
+    bottom: 0;
+    width: 100vw;
+}

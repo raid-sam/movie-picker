@@ -260,3 +260,4 @@ app.init();
 // stretch goals:
     // populate genre list directly from the API with an initial call so it's absolutely up to date
     // provide users with movie providers (displayed with logo) to view each movie
+    // load more button

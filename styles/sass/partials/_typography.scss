@@ -20,6 +20,10 @@ body{
     @include fontStyles(2rem, 3rem, $primaryColor, 0, none, normal, $mainFont, center)
 }
 
+form {
+    font-size: 3rem;
+}
+
 footer{
     color: $backgroundColor
 }
