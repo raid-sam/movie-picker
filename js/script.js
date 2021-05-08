@@ -1,70 +1,3 @@
-
-// const url = 'https://api.themoviedb.org/3/movie/550?api_key=5b7c94b78466743c18dd424ce270ca01&language=en-US';
-// console.log(url);
-
-//example of image path for Fightclub:
-//pB8BM7pdSp6B6Ih7QZ4DrQ3PmJK.jpg
-
-// getting Object info for Fight Club: 
-// fetch(url)
-//     .then(function (response) {
-//         console.log(response);
-//         return response.json();
-//     })
-//     .then(function (response) {
-//         console.log(response);
-//     });
-
-// const url = new URL(`https://api.themoviedb.org/3/discover/movie`);
-// // console.log(url)
-
-// url.search = new URLSearchParams({
-//     api_key: `5b7c94b78466743c18dd424ce270ca01`,
-//     with_original_language: 'en',
-//     sort_by: `popularity.desc`,
-//     with_genres: '28',
-//     'release_date.gte' : '1980-01-01',
-//     'release_date.lte' : '1989-12-31'
-// }); 
-
-// console.log(url)
-
-// fetch(url)
-//     .then(function (response) {
-//         // console.log(response);
-//         return response.json();
-//     })
-//     .then(function (response) {
-//         console.log(response);
-//     });
-
-
-// const genreUrl = new URL(`https://api.themoviedb.org/3/genre/movie/list`);
-
-// genreUrl.search = new URLSearchParams({
-//     api_key: `5b7c94b78466743c18dd424ce270ca01`,
-// });
-
-// console.log(genreUrl)
-
-// fetch(genreUrl)
-//     .then(function (response) {
-//         // console.log(response);
-//         return response.json();
-//     })
-//     .then(function (response) {
-//         // console.log(response);
-//     });
-
-
-
-
-// Movie Title
-// Movie Poster
-// Discover movies by rating
-// Discover movies by decade
-
-// Project Pseudocode
 // set up namespace
 
 const app = {};
@@ -121,6 +54,8 @@ app.dataInit = () => {
         '2010s': ['2010-01-01', '2019-12-31'],
         '2020s': ['2020-01-01', '2029-12-31'],
     }
+    // Initialize viewMore click tracking property 
+    app.viewMoreClicks = 0;
 }
 
 
@@ -139,7 +74,10 @@ app.createSelectors = () => {
     //create a selector on the gallery
     app.gallerySelector = document.querySelector('.gallery');
     //create a selector for the back button
-    app.backButton = document.querySelector('#backButton');
+    app.backButtons = document.querySelectorAll('.backButton');
+    console.log(app.backButtons);
+    //create a selector for the 'view more' button
+    app.viewMore = document.querySelector('#viewMore')
     //create a selector for the h1
     app.mainTitle = document.querySelector('h1');
 }
@@ -157,9 +95,16 @@ app.addEventListeners = () => {
         console.log('form submitted');
     });
     // create an event listener for any button with an ID of "backButton" that is a child of the body element
-    app.backButton.addEventListener('click', () => {
-        app.goBack();
-        console.log('button press');
+    app.backButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+            app.goBack();
+            console.log('button press');
+        })
+    })
+    //create an event listener for the 'view more' button
+    app.viewMore.addEventListener('click', (event) => {
+        app.viewMoreMovies();
+        console.log("viewMore clicked");
     })
 }
 
@@ -169,7 +114,11 @@ app.runSearch = () => {
     // give form class of noDisplay (sets it to display none)
     app.form.classList.toggle('noDisplay');
     // remove the noDisplay class from the "back" button (so it is now visible)
-    app.backButton.classList.toggle('noDisplay');
+    app.backButtons.forEach((button) => {
+        button.classList.toggle('noDisplay');
+    });
+    //take away class of 'noDisplay' for the 'view more' button
+    app.viewMore.classList.toggle('noDisplay');
     // save user decade choice and genre choice to variables
     const userGenre = app.genreSelector.value;
     const userDecade = app.decadeSelector.value;
@@ -210,13 +159,18 @@ app.runSearch = () => {
 // create an array from the first 6 movie objects in the API response using the slice method (slicing from index 0 to 6)
 app.topArray = (moviesObject) => {
     const moviesArray = moviesObject.results.slice(0, 6);
+    //define a second and third array in the topArray function
+    app.secondArray = moviesObject.results.slice(6, 12);
+    app.thirdArray = moviesObject.results.slice(12, 18);
+    console.log(app.secondArray);
+    console.log(app.thirdArray);
     app.displayMovies(moviesArray);
 }
 
 // define a displayMovies function
 app.displayMovies = (moviesArray) => {
     const imageUrl = 'https://image.tmdb.org/t/p/w500';
-    console.log(moviesArray);
+    // console.log(moviesArray);
     console.log(app.gallerySelector);
 
     // surface poster image, and movie title
@@ -238,7 +192,23 @@ app.displayMovies = (moviesArray) => {
     })
 }
 
+// VIEW MORE MOVIES: WHEN VIEW MORE IS CLICKED
+//declare the viewMoreMovies function
 
+app.viewMoreMovies = () => {
+    switch (app.viewMoreClicks) {
+        case 0: {
+            app.displayMovies(app.secondArray);
+            app.viewMoreClicks++;
+            console.log(app.viewMoreClicks);
+            break;
+        }
+        case 1: {
+            app.displayMovies(app.thirdArray);
+            app.viewMore.classList.toggle('noDisplay');
+        }
+    }
+}
 
 
 // GO BACK: WHEN BACK BUTTON IS CLICKED
@@ -250,14 +220,21 @@ app.goBack = () => {
     app.mainTitle.textContent = "Movie Picker";
     // toggle the noDisplay on the "back" button, hiding it
     app.form.classList.toggle('noDisplay');
-    app.backButton.classList.toggle('noDisplay');
+    app.backButtons.forEach((button) => {
+        button.classList.toggle('noDisplay');
+    })
+    // toggle the noDisplay on the "view more" button, hiding it
+    app.viewMore.classList.add('noDisplay');
+    //clear the viewMoreClicks counter back to zero
+    app.viewMoreClicks = 0;
 }
 
 
 // call init function
 app.init();
 
+//--------- ADD MORE ITEMS STRETCH GOAL ---------
+
 // stretch goals:
     // populate genre list directly from the API with an initial call so it's absolutely up to date
     // provide users with movie providers (displayed with logo) to view each movie
-    // load more button
