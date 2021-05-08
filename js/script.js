@@ -75,11 +75,17 @@ app.createSelectors = () => {
     app.gallerySelector = document.querySelector('.gallery');
     //create a selector for the back button
     app.backButtons = document.querySelectorAll('.backButton');
-    console.log(app.backButtons);
+
     //create a selector for the 'view more' button
     app.viewMore = document.querySelector('#viewMore')
     //create a selector for the h1
     app.mainTitle = document.querySelector('h1');
+    // create a selector for the info text box
+    app.infoBox = document.querySelector('.infoBox');
+    // create a selector for the in-box info icon
+    app.boxIcon = document.querySelector('#boxIcon');
+    console.log(boxIcon);
+
 }
 
 console.log(app.genreSelector);
@@ -106,6 +112,16 @@ app.addEventListeners = () => {
         app.viewMoreMovies();
         console.log("viewMore clicked");
     })
+    // create an event listener for the in-box info icon
+    app.boxIcon.addEventListener('click', ()=>{
+        app.closeInfo();
+        console.log('clicked')
+    })
+
+    // When the in-box info icon is clicked :
+    // toggle nodisplay class on: 
+        // the text box (hiding it)
+        // the h1 info icon (showing it)
 }
 
 // RUN SEARCH: WHEN THE FORM IS SUBMITTED
@@ -123,7 +139,9 @@ app.runSearch = () => {
     const userGenre = app.genreSelector.value;
     const userDecade = app.decadeSelector.value;
     // give the new h1 element text info of the decade + genre 
-    app.mainTitle.textContent = `Most popular ${userGenre} movies of the ${userDecade}.`;
+    app.mainTitle.innerHTML = `Most popular ${userGenre} movies of the ${userDecade}.<i class="far fa-question-circle" id="h1Icon"></i>`;
+
+    app.displayIcon();
 
     // save base URL as variable
     const baseURL = `https://api.themoviedb.org/3/discover/movie`;
@@ -154,6 +172,30 @@ app.runSearch = () => {
             console.log(jsonResponse);
             app.topArray(jsonResponse);
         });
+}
+
+app.displayIcon = () => {
+    // create a selector for the h1 info icon
+    app.h1Icon = document.querySelector('#h1Icon');
+    console.log(h1Icon);
+    // create an event listener for when someone clicks the on-screen info icon
+    app.h1Icon.addEventListener('click', () => {
+        // When icon is clicked:
+        // surface a block of text  by toggling the noDisplay class on the info text box
+        app.infoBox.classList.toggle('noDisplay');
+        // hide h1 info icon by toggling hiddenIcon class
+        app.h1Icon.classList.toggle('hiddenIcon');
+        console.log(app.h1Icon)
+    })
+
+}
+
+app.closeInfo = ()=>{
+    // When the in-box info icon is clicked :
+    // toggle nodisplay class on the text box (hiding it)
+        app.infoBox.classList.toggle('noDisplay');
+    // toggle hiddenIcon class on the h1 info icon (showing it)
+        app.h1Icon.classList.toggle('hiddenIcon');
 }
 
 // create an array from the first 6 movie objects in the API response using the slice method (slicing from index 0 to 6)
@@ -233,7 +275,12 @@ app.goBack = () => {
 // call init function
 app.init();
 
-//--------- ADD MORE ITEMS STRETCH GOAL ---------
+//--------- INFO BUTTON STRETCH GOAL ---------
+
+
+
+
+
 
 // stretch goals:
     // populate genre list directly from the API with an initial call so it's absolutely up to date

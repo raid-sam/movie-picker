@@ -13,6 +13,12 @@ h1 {
     padding: 1.5rem 4rem;
 }
 
+i{
+    color: hsla(0, 0%, 0%,0.5);
+    font-size: 4rem;
+    text-shadow: none;
+}
+
 h2,
 label{
     @include fontStyles(4rem, normal, $primaryColor, 1px, uppercase, normal, $titleFont, center)
@@ -29,3 +35,5 @@ form {
 footer{
     color: $backgroundColor
 }
+
+
