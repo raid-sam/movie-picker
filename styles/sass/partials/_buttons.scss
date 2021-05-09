@@ -1,0 +1,23 @@
+button {
+    background-color: $primaryColor;
+    color: $backgroundColor;
+    border: none;
+    text-transform: uppercase;
+    padding: 1.5rem;
+    border-radius: 15px;
+    max-width: 20rem;
+}
+
+// spacing on the back button
+
+button.backButton {
+    margin-bottom: 5rem;
+}
+
+button.topBackButton {
+    margin-top: 5rem;
+}
+
+button.viewMore {
+    margin-left: 3rem;
+}

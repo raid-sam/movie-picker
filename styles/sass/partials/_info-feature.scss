@@ -1,0 +1,29 @@
+// info box on the search results page
+
+.hiddenIcon{
+    color: $backgroundColor;
+}
+
+i{
+    cursor: pointer;
+    position: relative;
+    left:2rem;
+}
+
+div.infoBox{
+    position: fixed;
+    border: 3px solid $primaryColor;
+    border-radius: 15px;
+    background-color: $textBackground;
+    width: 30rem;
+    padding: 2.3rem;
+    left: calc(50% - 15rem)
+}
+
+div.infoBox i{
+    position: absolute;
+    top: 0;
+    right: 0;
+    text-align: right;
+    font-size: 3rem;
+}

@@ -75,7 +75,6 @@ app.createSelectors = () => {
     app.gallerySelector = document.querySelector('.gallery');
     //create a selector for the back button
     app.backButtons = document.querySelectorAll('.backButton');
-
     //create a selector for the 'view more' button
     app.viewMore = document.querySelector('#viewMore')
     //create a selector for the h1
@@ -84,12 +83,7 @@ app.createSelectors = () => {
     app.infoBox = document.querySelector('.infoBox');
     // create a selector for the in-box info icon
     app.boxIcon = document.querySelector('#boxIcon');
-    console.log(boxIcon);
-
 }
-
-console.log(app.genreSelector);
-
 
 // function to add event listeners:
 app.addEventListeners = () => {
@@ -98,30 +92,21 @@ app.addEventListeners = () => {
         // prevent default behaviour when page is submitted (preventDefault)
         event.preventDefault();
         app.runSearch();
-        console.log('form submitted');
     });
     // create an event listener for any button with an ID of "backButton" that is a child of the body element
     app.backButtons.forEach((button) => {
         button.addEventListener('click', () => {
             app.goBack();
-            console.log('button press');
         })
     })
     //create an event listener for the 'view more' button
-    app.viewMore.addEventListener('click', (event) => {
+    app.viewMore.addEventListener('click', () => {
         app.viewMoreMovies();
-        console.log("viewMore clicked");
     })
     // create an event listener for the in-box info icon
-    app.boxIcon.addEventListener('click', ()=>{
+    app.boxIcon.addEventListener('click', () => {
         app.closeInfo();
-        console.log('clicked')
     })
-
-    // When the in-box info icon is clicked :
-    // toggle nodisplay class on: 
-        // the text box (hiding it)
-        // the h1 info icon (showing it)
 }
 
 // RUN SEARCH: WHEN THE FORM IS SUBMITTED
@@ -158,7 +143,7 @@ app.runSearch = () => {
         with_genres: app.genreList[userGenre],
         'primary_release_date.gte': app.decadeList[userDecade][0],
         'primary_release_date.lte': app.decadeList[userDecade][1]
-    })
+    });
     // perform a fetch with the constructed search parameters
     fetch(url)
         // process data from API call
@@ -169,7 +154,6 @@ app.runSearch = () => {
         // define a function that accepts the JSON data as an argument
         // this will surface our query results object (we will use this later)
         .then((jsonResponse) => {
-            console.log(jsonResponse);
             app.topArray(jsonResponse);
         });
 }
@@ -177,7 +161,6 @@ app.runSearch = () => {
 app.displayIcon = () => {
     // create a selector for the h1 info icon
     app.h1Icon = document.querySelector('#h1Icon');
-    console.log(h1Icon);
     // create an event listener for when someone clicks the on-screen info icon
     app.h1Icon.addEventListener('click', () => {
         // When icon is clicked:
@@ -185,17 +168,16 @@ app.displayIcon = () => {
         app.infoBox.classList.toggle('noDisplay');
         // hide h1 info icon by toggling hiddenIcon class
         app.h1Icon.classList.toggle('hiddenIcon');
-        console.log(app.h1Icon)
-    })
+    });
 
 }
 
-app.closeInfo = ()=>{
+app.closeInfo = () => {
     // When the in-box info icon is clicked :
     // toggle nodisplay class on the text box (hiding it)
-        app.infoBox.classList.toggle('noDisplay');
+    app.infoBox.classList.toggle('noDisplay');
     // toggle hiddenIcon class on the h1 info icon (showing it)
-        app.h1Icon.classList.toggle('hiddenIcon');
+    app.h1Icon.classList.toggle('hiddenIcon');
 }
 
 // create an array from the first 6 movie objects in the API response using the slice method (slicing from index 0 to 6)
@@ -204,16 +186,12 @@ app.topArray = (moviesObject) => {
     //define a second and third array in the topArray function
     app.secondArray = moviesObject.results.slice(6, 12);
     app.thirdArray = moviesObject.results.slice(12, 18);
-    console.log(app.secondArray);
-    console.log(app.thirdArray);
     app.displayMovies(moviesArray);
 }
 
 // define a displayMovies function
 app.displayMovies = (moviesArray) => {
     const imageUrl = 'https://image.tmdb.org/t/p/w500';
-    // console.log(moviesArray);
-    console.log(app.gallerySelector);
 
     // surface poster image, and movie title
     // FOR EACH array item, create an li
@@ -231,7 +209,7 @@ app.displayMovies = (moviesArray) => {
         listElement.append(movieHeader);
         // append the li to the .gallery section
         app.gallerySelector.append(listElement);
-    })
+    });
 }
 
 // VIEW MORE MOVIES: WHEN VIEW MORE IS CLICKED
@@ -242,7 +220,6 @@ app.viewMoreMovies = () => {
         case 0: {
             app.displayMovies(app.secondArray);
             app.viewMoreClicks++;
-            console.log(app.viewMoreClicks);
             break;
         }
         case 1: {
@@ -274,14 +251,3 @@ app.goBack = () => {
 
 // call init function
 app.init();
-
-//--------- INFO BUTTON STRETCH GOAL ---------
-
-
-
-
-
-
-// stretch goals:
-    // populate genre list directly from the API with an initial call so it's absolutely up to date
-    // provide users with movie providers (displayed with logo) to view each movie

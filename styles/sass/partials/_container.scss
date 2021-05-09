@@ -1,0 +1,14 @@
+.container {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0 auto;
+}
+
+.content-wrap{
+    padding-bottom: 6.2rem;
+    max-width: 1200px;
+}
